@@ -1,2 +1,3 @@
-SAMI Committee Hub V6 production path initialized on 8 August 2026.
-Target URL: https://samifoundationug.org/app/
+SAMI Committee Hub V10 isolated portal deployment marker — 8 August 2026.
+V10 portal: https://samifoundationug.org/app/portal-v10.html
+Auth isolation: tab-scoped session storage; legacy /app/ service worker cleanup.
