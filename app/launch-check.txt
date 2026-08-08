@@ -1,4 +1,4 @@
-SAMI Committee Hub V11 governance and operations deployment marker — 8 August 2026.
-V11 portal: https://samifoundationug.org/app/portal-v11.html
-Preserves V10 tab-scoped authentication and legacy service-worker cleanup.
-Modules: role dashboard, meetings/minutes, reports, tasks, committee onboarding, finance, activities, beneficiary records, SAMI AI readiness.
+SAMI Committee Hub V12 executive readiness and roster onboarding deployment marker — 8 August 2026.
+V12 portal: https://samifoundationug.org/app/portal-v12.html
+Preserves V10/V11 tab-scoped authentication and existing governance/operations workflows.
+V12 adds Executive Director permission verification, approved committee roster status, safe invitation prefill, and no-guessed-email onboarding.
