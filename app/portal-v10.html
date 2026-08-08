@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="theme-color" content="#166534">
+<title>SAMI Committee Hub — V10 Portal</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.8"></script>
+<style>
+:root{--g:#166534;--g2:#14532d;--bg:#f4f7f5;--card:#fff;--b:#dce5df;--m:#66736a;--ok:#eaf7ee;--warn:#fff8e6;--bad:#fff1f1;--shadow:0 10px 30px rgba(20,83,45,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:#17221b}button,input{font:inherit}button{cursor:pointer}.hidden{display:none!important}.shell{max-width:1100px;margin:auto;padding:18px}.brand{display:flex;align-items:center;gap:11px}.logo{width:44px;height:44px;border-radius:13px;background:var(--g);color:#fff;display:grid;place-items:center;font-weight:900}.muted{color:var(--m)}.card{background:var(--card);border:1px solid var(--b);border-radius:17px;padding:17px;box-shadow:var(--shadow)}.authWrap{min-height:100vh;display:grid;place-items:center;padding:18px}.authCard{width:min(470px,100%)}.authCard form{display:grid;gap:11px;margin-top:16px}.authCard input{width:100%;padding:12px;border:1px solid var(--b);border-radius:11px}.btn{border:0;border-radius:11px;padding:11px 14px;background:var(--g);color:#fff;font-weight:750}.btn.alt{background:#edf2ef;color:#17221b}.btn:disabled{opacity:.6;cursor:not-allowed}.status{margin-top:12px;padding:12px;border-radius:11px;background:#f8faf9;border:1px solid var(--b);white-space:pre-wrap;line-height:1.4}.status.ok{background:var(--ok);border-color:#b7dec2}.status.err{background:var(--bad);border-color:#e3b8b8}.status.warn{background:var(--warn);border-color:#ecd88d}.topbar{display:flex;align-items:center;gap:12px;margin-bottom:14px}.topbar .signout{margin-left:auto}.hero{background:linear-gradient(135deg,var(--g2),#15803d);color:#fff;border-radius:18px;padding:20px;margin-bottom:14px}.hero h1{font-size:25px;margin:0 0 5px}.rolePills{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:rgba(255,255,255,.16);font-size:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.metric{background:#fff;border:1px solid var(--b);border-radius:15px;padding:14px}.metric b{font-size:24px;display:block;margin-top:2px}.section{margin-top:14px}.section h2{font-size:18px;margin:0 0 10px}.modules{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.module{background:#fff;border:1px solid var(--b);border-radius:15px;padding:14px}.module b{display:block;margin-bottom:5px}.tag{display:inline-block;font-size:12px;padding:4px 7px;border-radius:999px;background:var(--ok);color:var(--g)}.tag.locked{background:#f0f1f0;color:#616862}.list{display:grid;gap:8px}.item{border:1px solid var(--b);border-radius:12px;padding:11px;background:#fff}.itemHead{display:flex;justify-content:space-between;gap:10px}.diag{font-size:13px;display:grid;gap:6px}.diag div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--b);padding-bottom:5px}.diag div:last-child{border:0}.foot{font-size:12px;color:var(--m);margin-top:13px;text-align:center}@media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.modules{grid-template-columns:1fr 1fr}}@media(max-width:520px){.grid,.modules{grid-template-columns:1fr}.topbar{align-items:flex-start}.topbar .signout{padding:9px}}
+</style>
+</head>
+<body>
+<section id="bootScreen" class="authWrap">
+  <div class="card authCard">
+    <div class="brand"><div class="logo">S</div><div><h2 style="margin:0">SAMI Committee Hub</h2><div class="muted">V10 secure portal</div></div></div>
+    <div id="bootStatus" class="status">Preparing a clean SAMI session…</div>
+  </div>
+</section>
+
+<section id="loginScreen" class="authWrap hidden">
+  <div class="card authCard">
+    <div class="brand"><div class="logo">S</div><div><h2 style="margin:0">SAMI Committee Hub</h2><div class="muted">Committee sign in • V10</div></div></div>
+    <p class="muted">This portal keeps the signed-in account isolated to this browser tab, preventing another SAMI account in a different tab from replacing your session.</p>
+    <form id="loginForm" novalidate>
+      <input id="emailInput" type="email" autocomplete="username" placeholder="Committee email" required>
+      <input id="passwordInput" type="password" autocomplete="current-password" placeholder="Password" required>
+      <button id="loginBtn" class="btn" type="submit">Sign in securely</button>
+    </form>
+    <div id="loginStatus" class="status warn">Enter your committee email and password. This message will remain visible if an error occurs.</div>
+    <div class="foot">Do not share your password with anyone, including SAMI administrators.</div>
+  </div>
+</section>
+
+<main id="portalScreen" class="hidden">
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand"><div class="logo">S</div><div><b>SAMI Committee Hub</b><div class="muted">Governance & operations portal • V10</div></div></div>
+      <button id="signOutBtn" class="btn alt signout">Sign out</button>
+    </div>
+
+    <div class="hero">
+      <h1 id="welcomeText">Welcome</h1>
+      <div id="identityText"></div>
+      <div id="rolePills" class="rolePills"></div>
+    </div>
+
+    <div class="grid">
+      <div class="metric"><span class="muted">Open tasks</span><b id="taskCount">—</b></div>
+      <div class="metric"><span class="muted">Meetings visible</span><b id="meetingCount">—</b></div>
+      <div class="metric"><span class="muted">Reports visible</span><b id="reportCount">—</b></div>
+      <div class="metric"><span class="muted">Session</span><b style="font-size:17px" id="sessionState">Verified</b></div>
+    </div>
+
+    <section class="section card">
+      <h2>Your authorised workspace</h2>
+      <div id="moduleGrid" class="modules"></div>
+    </section>
+
+    <section class="section card">
+      <h2>Governance records</h2>
+      <div class="modules">
+        <div><b>Recent meetings</b><div id="meetingList" class="list" style="margin-top:8px"></div></div>
+        <div><b>Recent reports</b><div id="reportList" class="list" style="margin-top:8px"></div></div>
+        <div><b>My tasks</b><div id="taskList" class="list" style="margin-top:8px"></div></div>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>V10 session diagnostics</h2>
+      <div class="diag">
+        <div><span>Supabase authentication</span><b id="dAuth">Verified</b></div>
+        <div><span>Committee profile</span><b id="dProfile">Loaded</b></div>
+        <div><span>Role assignments</span><b id="dRoles">Loaded</b></div>
+        <div><span>Session storage</span><b>Isolated to this tab</b></div>
+        <div><span>Legacy app cache</span><b id="dCache">Cleared</b></div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+'use strict';
+const SUPABASE_URL='https://ztljgqyzunqnbfaviwgj.supabase.co';
+const SUPABASE_KEY='sb_publishable_UQ0f1KTsurvM8lG-t2GhFg_smKHh5Z0';
+const $=id=>document.getElementById(id);
+let client=null,currentUser=null,currentProfile=null,currentRoles=[];
+
+const roleModules={
+  'Executive Director':['Dashboard','Activities','Beneficiaries','Tasks','Meetings','Reports','Finance','Committee Accounts','SAMI AI'],
+  'Advisory Board':['Dashboard','Governance','Tasks','Meetings','Reports','SAMI AI'],
+  'Project Overseer':['Dashboard','Activities','Beneficiaries','Tasks','Meetings','Reports','Finance Overview','SAMI AI'],
+  'Project Coordinator':['Dashboard','Activities','Beneficiaries','Tasks','Meetings','Reports','SAMI AI'],
+  'Finance & Administration':['Dashboard','Tasks','Meetings','Reports','Finance','Documents','SAMI AI'],
+  'Field Officer / Secretary':['Dashboard','Activities','Beneficiaries','Tasks','Meetings','Reports','Documents','SAMI AI'],
+  'Trainer / Mentor':['Dashboard','Activities','Beneficiaries','Tasks','Meetings','SAMI AI'],
+  'Beneficiary Leadership Committee':['Dashboard','Activities','Tasks','Meetings','SAMI AI']
+};
+
+function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
+function showOnly(id){['bootScreen','loginScreen','portalScreen'].forEach(x=>$(x).classList.toggle('hidden',x!==id));}
+function status(text,type='warn'){$('loginStatus').textContent=text;$('loginStatus').className='status '+type;}
+
+async function cleanLegacyApp(){
+  let changed=false;
+  try{
+    if('serviceWorker' in navigator){
+      const regs=await navigator.serviceWorker.getRegistrations();
+      for(const reg of regs){
+        try{
+          const path=new URL(reg.scope).pathname;
+          if(path.startsWith('/app/')){await reg.unregister();changed=true;}
+        }catch(_){ }
+      }
+    }
+    if('caches' in window){
+      const keys=await caches.keys();
+      for(const key of keys){if(key.startsWith('sami-hub-')){await caches.delete(key);changed=true;}}
+    }
+  }catch(_){ }
+  return changed;
+}
+
+function makeClient(){
+  const tabStorage={
+    getItem:key=>Promise.resolve(sessionStorage.getItem(key)),
+    setItem:(key,value)=>{sessionStorage.setItem(key,value);return Promise.resolve();},
+    removeItem:key=>{sessionStorage.removeItem(key);return Promise.resolve();}
+  };
+  return supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{storage:tabStorage,persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storageKey:'sami-v10-tab-session'}});
+}
+
+async function verifyAndLoad(){
+  $('bootStatus').textContent='Verifying your Supabase session…';
+  const {data:userData,error:userError}=await client.auth.getUser();
+  if(userError||!userData?.user){showOnly('loginScreen');return false;}
+  currentUser=userData.user;
+  const {data:profile,error:profileError}=await client.from('profiles').select('id,full_name,role,is_active').eq('id',currentUser.id).single();
+  if(profileError||!profile){
+    await client.auth.signOut({scope:'local'}).catch(()=>{});
+    showOnly('loginScreen');status('Authentication succeeded, but no SAMI committee profile could be loaded. Contact the Executive Director.','err');return false;
+  }
+  if(profile.is_active!==true){
+    await client.auth.signOut({scope:'local'}).catch(()=>{});
+    showOnly('loginScreen');status('This SAMI committee account is currently inactive.','err');return false;
+  }
+  currentProfile=profile;
+  const {data:roles,error:rolesError}=await client.from('user_roles').select('role_name,is_primary,is_active').eq('user_id',currentUser.id).eq('is_active',true).order('is_primary',{ascending:false});
+  currentRoles=rolesError||!roles?.length?[profile.role]:roles.map(r=>r.role_name);
+  renderPortal();
+  showOnly('portalScreen');
+  await loadWorkspaceData();
+  return true;
+}
+
+function renderPortal(){
+  const first=(currentProfile.full_name||'Committee member').split(/\s+/)[0];
+  $('welcomeText').textContent='Welcome, '+first;
+  $('identityText').textContent=(currentProfile.full_name||'Committee member')+' • '+(currentUser.email||'');
+  $('rolePills').innerHTML=currentRoles.map(r=>'<span class="pill">'+esc(r)+'</span>').join('');
+  $('dAuth').textContent='Verified';$('dProfile').textContent='Loaded';$('dRoles').textContent=currentRoles.length+' active';
+  const modules=[];currentRoles.forEach(r=>(roleModules[r]||['Dashboard']).forEach(m=>{if(!modules.includes(m))modules.push(m);}));
+  const protectedForBoard=currentRoles.includes('Advisory Board')&&!currentRoles.includes('Executive Director');
+  $('moduleGrid').innerHTML=modules.map(m=>'<div class="module"><b>'+esc(m)+'</b><span class="tag">Authorised</span></div>').join('')+
+    (protectedForBoard?'<div class="module"><b>Finance transactions</b><span class="tag locked">RLS restricted</span></div><div class="module"><b>Beneficiary sensitive details</b><span class="tag locked">RLS restricted</span></div><div class="module"><b>Committee invitation management</b><span class="tag locked">RLS restricted</span></div>':'');
+}
+
+async function countQuery(table,filter){
+  let q=client.from(table).select('id',{count:'exact',head:true});
+  if(filter)q=filter(q);
+  const {count,error}=await q;return error?null:(count??0);
+}
+async function safeList(table,fields,orderCol,limit=6,filter){
+  let q=client.from(table).select(fields);
+  if(filter)q=filter(q);
+  const {data,error}=await q.order(orderCol,{ascending:false}).limit(limit);
+  return error?[]:(data||[]);
+}
+function listHtml(rows,kind){
+  if(!rows.length)return '<div class="muted">No records available.</div>';
+  return rows.map(x=>{
+    let title=x.title||'Record',sub='';
+    if(kind==='meeting')sub=[x.meeting_date,x.status].filter(Boolean).join(' • ');
+    if(kind==='report')sub=[x.report_type,x.status].filter(Boolean).join(' • ');
+    if(kind==='task')sub=[x.due_date?('Due '+x.due_date):'',x.status].filter(Boolean).join(' • ');
+    return '<div class="item"><div class="itemHead"><b>'+esc(title)+'</b><span class="tag">'+esc(x.status||'')+'</span></div><div class="muted" style="font-size:12px;margin-top:4px">'+esc(sub)+'</div></div>';
+  }).join('');
+}
+
+async function loadWorkspaceData(){
+  const [tc,mc,rc,meetings,reports,tasks]=await Promise.all([
+    countQuery('tasks',q=>q.neq('status','Completed')),
+    countQuery('meetings'),
+    countQuery('reports'),
+    safeList('meetings','id,title,meeting_date,status','meeting_date'),
+    safeList('reports','id,title,report_type,status,created_at','created_at'),
+    safeList('tasks','id,title,due_date,status,created_at','created_at',6,q=>q.or('assigned_to.eq.'+currentUser.id+',created_by.eq.'+currentUser.id))
+  ]);
+  $('taskCount').textContent=tc===null?'Restricted':tc;
+  $('meetingCount').textContent=mc===null?'Restricted':mc;
+  $('reportCount').textContent=rc===null?'Restricted':rc;
+  $('meetingList').innerHTML=listHtml(meetings,'meeting');
+  $('reportList').innerHTML=listHtml(reports,'report');
+  $('taskList').innerHTML=listHtml(tasks,'task');
+}
+
+$('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const email=$('emailInput').value.trim().toLowerCase(),password=$('passwordInput').value;
+  if(!email||!password){status('Enter both your committee email and password.','err');return;}
+  $('loginBtn').disabled=true;$('loginBtn').textContent='Signing in…';
+  status('Contacting Supabase Auth… This message will remain here until the result is known.','warn');
+  try{
+    await client.auth.signOut({scope:'local'}).catch(()=>{});
+    const {data,error}=await client.auth.signInWithPassword({email,password});
+    if(error){status('Sign-in failed: '+error.message,'err');return;}
+    if(!data?.session||!data?.user){status('Supabase accepted the request but did not return a usable session.','err');return;}
+    status('Authentication successful. Verifying your SAMI committee profile…','ok');
+    const ok=await verifyAndLoad();
+    if(!ok)return;
+  }catch(err){status('Sign-in could not finish: '+(err?.message||String(err)),'err');}
+  finally{$('loginBtn').disabled=false;$('loginBtn').textContent='Sign in securely';$('passwordInput').value='';}
+});
+
+$('signOutBtn').addEventListener('click',async()=>{
+  $('signOutBtn').disabled=true;
+  try{await client.auth.signOut({scope:'local'});}catch(_){ }
+  currentUser=null;currentProfile=null;currentRoles=[];sessionStorage.removeItem('sami-v10-tab-session');
+  $('emailInput').value='';$('passwordInput').value='';status('Signed out from this V10 tab.','ok');showOnly('loginScreen');$('signOutBtn').disabled=false;
+});
+
+(async function boot(){
+  const cleaned=await cleanLegacyApp();
+  client=makeClient();
+  $('dCache').textContent=cleaned?'Cleared / unregistered':'No legacy cache active';
+  const ok=await verifyAndLoad().catch(()=>false);
+  if(!ok&&$('bootScreen').classList.contains('hidden')===false)showOnly('loginScreen');
+})();
+</script>
+</body>
+</html>
