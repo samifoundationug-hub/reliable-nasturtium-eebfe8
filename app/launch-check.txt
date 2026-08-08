@@ -1,3 +1,4 @@
-SAMI Committee Hub V10 isolated portal deployment marker — 8 August 2026.
-V10 portal: https://samifoundationug.org/app/portal-v10.html
-Auth isolation: tab-scoped session storage; legacy /app/ service worker cleanup.
+SAMI Committee Hub V11 governance and operations deployment marker — 8 August 2026.
+V11 portal: https://samifoundationug.org/app/portal-v11.html
+Preserves V10 tab-scoped authentication and legacy service-worker cleanup.
+Modules: role dashboard, meetings/minutes, reports, tasks, committee onboarding, finance, activities, beneficiary records, SAMI AI readiness.
