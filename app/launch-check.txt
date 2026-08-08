@@ -1,0 +1,2 @@
+SAMI Committee Hub V6 production path initialized on 8 August 2026.
+Target URL: https://samifoundationug.org/app/
