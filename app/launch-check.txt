@@ -1,4 +1,4 @@
-SAMI Committee Hub V12 executive readiness and roster onboarding deployment marker — 8 August 2026.
-V12 portal: https://samifoundationug.org/app/portal-v12.html
-Preserves V10/V11 tab-scoped authentication and existing governance/operations workflows.
-V12 adds Executive Director permission verification, approved committee roster status, safe invitation prefill, and no-guessed-email onboarding.
+SAMI Committee Hub V13 Training & Leadership Academy deployment marker — 8 August 2026.
+V13 portal: https://samifoundationug.org/app/portal-v13.html
+Preserves V10/V11 tab-scoped authentication, V12 roster onboarding, governance and operational workflows.
+V13 adds role-based training courses, automatic assignments, member progress, private evidence/certificates, live-session attendance, manager verification, and governance compliance oversight.
