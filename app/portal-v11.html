@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="theme-color" content="#166534">
+<title>SAMI Committee Hub — V11</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.8"></script>
+<link rel="stylesheet" href="./portal-v11.css?v=11">
+</head>
+<body>
+<section id="boot" class="authWrap"><div class="card authCard"><div class="brand"><div class="logo">S</div><div><h2 style="margin:0">SAMI Committee Hub</h2><div class="muted">V11 governance & operations</div></div></div><div id="bootMsg" class="status">Checking your secure committee session…</div></div></section>
+<section id="login" class="authWrap hidden"><div class="card authCard"><div class="brand"><div class="logo">S</div><div><h2 style="margin:0">SAMI Committee Hub</h2><div class="muted">V11 secure sign in</div></div></div><p class="muted">Your SAMI session stays isolated to this browser tab.</p><form id="loginForm" class="form"><input id="loginEmail" type="email" autocomplete="username" placeholder="Committee email" required><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Password" required><button id="loginBtn" class="btn">Sign in securely</button></form><div id="loginMsg" class="status warn">Enter your committee email and password.</div><div class="foot">Never share your password with another committee member or administrator.</div></div></section>
+
+<main id="portal" class="hidden"><div class="shell">
+<div class="topbar"><div class="brand"><div class="logo">S</div><div><b>SAMI Committee Hub</b><div class="muted small">V11 • live governance & operations</div></div></div><span class="spacer"></span><button id="refreshBtn" class="btn alt sm">Refresh</button><button id="signOutBtn" class="btn alt sm">Sign out</button></div>
+<div class="hero"><h1 id="welcome">Welcome</h1><div id="identity"></div><div id="rolePills" class="pills"></div></div>
+<nav id="nav" class="nav"></nav>
+
+<section id="page-dashboard" class="page active">
+<div class="metrics"><div class="metric"><span class="muted small">Open tasks</span><b id="mTasks">—</b></div><div class="metric"><span class="muted small">Meetings</span><b id="mMeetings">—</b></div><div class="metric"><span class="muted small">Reports</span><b id="mReports">—</b></div><div class="metric"><span class="muted small">Governance queue</span><b id="mQueue">—</b></div><div class="metric"><span class="muted small">Session</span><b style="font-size:16px">Verified</b></div></div>
+<div class="pageHead"><div><h2>Role dashboard</h2><div id="dashboardSubtitle" class="muted small"></div></div></div>
+<div class="grid3"><div class="card"><b>Needs attention</b><div id="attentionList" class="stack" style="margin-top:9px"></div></div><div class="card"><b>Recent meetings</b><div id="dashMeetings" class="stack" style="margin-top:9px"></div></div><div class="card"><b>Recent reports</b><div id="dashReports" class="stack" style="margin-top:9px"></div></div></div>
+<div id="securityCard" class="card" style="margin-top:11px"><b>Access boundaries</b><div id="accessSummary" class="grid3" style="margin-top:9px"></div></div>
+</section>
+
+<section id="page-meetings" class="page"><div class="pageHead"><div><h2>Meetings & minutes</h2><div class="muted small">Draft → Submitted → Approved</div></div><span class="spacer"></span><button id="newMeetingBtn" class="btn sm hidden">New meeting</button></div><div id="meetingsList" class="stack"></div></section>
+
+<section id="page-reports" class="page"><div class="pageHead"><div><h2>Reports</h2><div class="muted small">Draft → Submitted → Approved / Rejected</div></div><span class="spacer"></span><button id="newReportBtn" class="btn sm hidden">New report</button></div><div id="reportsList" class="stack"></div></section>
+
+<section id="page-tasks" class="page"><div class="pageHead"><div><h2>Committee tasks</h2><div class="muted small">Create, assign and follow through action points</div></div><span class="spacer"></span><button id="newTaskBtn" class="btn sm">New task</button></div><div id="tasksList" class="stack"></div></section>
+
+<section id="page-committee" class="page"><div class="pageHead"><div><h2>Committee accounts</h2><div class="muted small">Executive Director only</div></div></div><div class="grid2"><div class="card"><h3 style="margin-top:0">Invite member</h3><form id="inviteForm" class="form"><label>Full name<input id="inviteName" required></label><label>Email<input id="inviteEmail" type="email" required></label><label>Phone (optional)<input id="invitePhone"></label><label>Primary role<select id="invitePrimary"></select></label><div><label>Additional roles</label><div id="inviteExtras" class="checks" style="margin-top:6px"></div></div><button class="btn">Create invitation</button></form><div class="notice small" style="margin-top:10px">Creating an invitation authorises that email to activate through the SAMI activation page. It does not reveal or set the member’s password.</div></div><div class="card"><h3 style="margin-top:0">Activated members</h3><div id="membersList" class="stack"></div></div></div><div class="card" style="margin-top:11px"><h3 style="margin-top:0">Invitation register</h3><div id="invitesList" class="stack"></div></div></section>
+
+<section id="page-finance" class="page"><div class="pageHead"><div><h2>Finance</h2><div class="muted small">Draft → Submitted → Approved / Rejected → Paid</div></div><span class="spacer"></span><button id="newExpenseBtn" class="btn sm hidden">New expense</button></div><div id="financeKpis" class="kpis" style="margin-bottom:10px"></div><div id="expensesList" class="stack"></div></section>
+
+<section id="page-activities" class="page"><div class="pageHead"><div><h2>Programme activities</h2><div class="muted small">Field and programme delivery records</div></div><span class="spacer"></span><button id="newActivityBtn" class="btn sm hidden">New activity</button></div><div id="activitiesList" class="stack"></div></section>
+
+<section id="page-beneficiaries" class="page"><div class="pageHead"><div><h2>Beneficiary records</h2><div class="muted small">Restricted operational data</div></div><span class="spacer"></span><button id="newBeneficiaryBtn" class="btn sm hidden">New beneficiary</button></div><div class="notice small" style="margin-bottom:10px">Use the minimum personal information necessary. Sensitive records should only be accessed for authorised SAMI work.</div><div id="beneficiariesList" class="stack"></div></section>
+
+<section id="page-ai" class="page"><div class="pageHead"><div><h2>SAMI AI</h2><div class="muted small">Role-aware drafting assistant</div></div></div><div class="card"><b>AI workspace prepared</b><p class="muted">The secure Edge Function is already deployed, but live AI drafting remains disabled until the OpenAI server-side secrets are configured in Supabase. No API key should be entered into this page.</p><div class="notice small">When activated, SAMI AI will draft from authorised records and still require human review before anything is saved or approved.</div></div></section>
+
+<div class="foot">SAMI Foundation • Namere Community, Kampala, Uganda • Committee Hub V11</div>
+</div></main>
+<div id="modalHost"></div><div id="toast" class="toast"></div>
+
+<script src="./portal-v11-core.js?v=11"></script>
+<script src="./portal-v11-governance.js?v=11"></script>
+<script src="./portal-v11-operations.js?v=11"></script>
+<script src="./portal-v11-forms.js?v=11"></script>
+</body></html>
