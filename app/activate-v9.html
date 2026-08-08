@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#166534">
+<title>SAMI Committee Activation V9</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.110.8"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Arial;background:#f5f8f6;color:#17221b;min-height:100vh;display:grid;place-items:center;padding:18px}.card{width:min(520px,100%);background:#fff;border:1px solid #dce5df;border-radius:18px;padding:20px;box-shadow:0 10px 30px rgba(20,40,24,.08)}.brand{display:flex;gap:10px;align-items:center}.logo{width:44px;height:44px;border-radius:13px;background:#166534;color:white;display:grid;place-items:center;font-weight:900}.muted{color:#68736b}.notice{padding:11px;border-radius:11px;border:1px solid #dce5df;background:#f8faf8;font-size:13px;margin:14px 0}.ok{border-color:#b9dfc3;background:#eef9f1;color:#155b2e}.bad{border-color:#efb7b7;background:#fff1f1;color:#8a1c1c}.busy{border-color:#ecd88d;background:#fff8e6}label{font-size:13px;font-weight:700}form{display:grid;gap:11px}input{width:100%;padding:11px 12px;border:1px solid #dce5df;border-radius:10px;font:inherit}.btn{border:0;border-radius:10px;padding:11px 13px;background:#166534;color:#fff;font-weight:750;cursor:pointer}.btn:disabled{opacity:.6;cursor:not-allowed}.btn.alt{background:#eef2ef;color:#17221b;text-decoration:none;display:block;text-align:center;margin-top:10px}.small{font-size:12px}.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand"><div class="logo">S</div><div><h2 style="margin:0">SAMI Committee Activation</h2><div class="muted">V9 • direct Supabase activation test</div></div></div>
+  <div class="notice busy">Use the exact email invited by SAMI leadership. This page is intentionally not cached by the SAMI service worker.</div>
+  <form id="form">
+    <div><label>Invited email</label><input id="email" type="email" autocomplete="email" required></div>
+    <div><label>Create password</label><input id="p1" type="password" minlength="10" autocomplete="new-password" required></div>
+    <div><label>Confirm password</label><input id="p2" type="password" minlength="10" autocomplete="new-password" required></div>
+    <button id="submit" class="btn">Send confirmation email</button>
+  </form>
+  <div id="status" class="notice hidden"></div>
+  <div class="small muted">If Supabase rejects the request, the exact error returned by Auth will appear here. Do not share your password with anyone.</div>
+  <a class="btn alt" href="./main.html">Back to SAMI Committee Hub</a>
+</div>
+<script>
+const SUPABASE_URL='https://ztljgqyzunqnbfaviwgj.supabase.co';
+const PUBLISHABLE_KEY='sb_publishable_UQ0f1KTsurvM8lG-t2GhFg_smKHh5Z0';
+const REDIRECT='https://samifoundationug.org/app/';
+const db=supabase.createClient(SUPABASE_URL,PUBLISHABLE_KEY,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+const form=document.getElementById('form'),statusEl=document.getElementById('status'),button=document.getElementById('submit');
+function status(text,type='busy'){
+  statusEl.textContent=text;
+  statusEl.className='notice '+type;
+}
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(p1.value!==p2.value){status('Passwords do not match.','bad');return;}
+  const invited=email.value.trim().toLowerCase();
+  button.disabled=true;button.textContent='Contacting Supabase…';status('Sending signup request to Supabase Auth…','busy');
+  try{
+    const {data,error}=await db.auth.signUp({email:invited,password:p1.value,options:{emailRedirectTo:REDIRECT}});
+    if(error){
+      const extra=[error.name,error.code,error.status].filter(Boolean).join(' • ');
+      status('Supabase rejected the request: '+error.message+(extra?' ('+extra+')':''),'bad');
+      return;
+    }
+    if(data?.session){
+      status('Account activated and signed in successfully. You can now open the SAMI Committee Hub.','ok');
+    }else{
+      status('Supabase accepted the signup request at '+new Date().toLocaleTimeString()+'. A confirmation email should now be sent. Check the newest message from Supabase.','ok');
+    }
+  }catch(err){
+    status('The browser could not reach Supabase: '+(err?.message||String(err)),'bad');
+  }finally{
+    button.disabled=false;button.textContent='Send confirmation email';
+  }
+});
+</script>
+</body>
+</html>
