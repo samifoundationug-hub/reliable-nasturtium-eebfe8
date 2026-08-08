@@ -1,4 +1,6 @@
 SAMI Committee Hub V13 Training & Leadership Academy deployment marker — 8 August 2026.
 V13 portal: https://samifoundationug.org/app/portal-v13.html
-Preserves V10/V11 tab-scoped authentication, V12 roster onboarding, governance and operational workflows.
-V13 adds role-based training courses, automatic assignments, member progress, private evidence/certificates, live-session attendance, manager verification, and governance compliance oversight.
+V13 free-course update: all six foundational training requirements now have free learning routes only.
+External providers: OpenLearn / The Open University, OpenLearn Create / FIFA Guardians, and DisasterReady / META Project.
+Internal course: SAMI Foundation Orientation & Vision at /app/training/sami-orientation.html.
+No paid training links are included.
