@@ -7,6 +7,7 @@ Main updates:
 - Home page updated with special needs support language.
 - Programmes page updated with a dedicated Special Needs Support programme area.
 - About page updated to include dignity, inclusion, caregiver guidance, health awareness, and inclusive education support.
-- donate.html kept as a duplicate/compatibility version of fund.html.
+- fund.html is the canonical public Special Needs Fund page; donate.html redirects there for compatibility with existing links.
+- See README.md for routing and custom-domain preservation details.
 
 Upload the full contents of this folder or the ZIP file to Netlify.
